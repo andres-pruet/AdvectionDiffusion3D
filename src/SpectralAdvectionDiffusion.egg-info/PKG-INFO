@@ -29,7 +29,7 @@ $ pip install -e .
 
 # Usage Instructions
 
-First, the user must set the **gpu** variable to the desired value (True or False) at the head of all four files: **main.py**, **simulate.py**, **mfs_functions.py**, and **particular_functions.py**. **gpu** is **False** by default.
+First, the user must set the **gpu** variable to the desired value (True or False) at the head of all four files: **main.py**, **simulate.py**, **mfs_functions.py**, and **particular_functions.py**. The last 3 of those files are found in `/src/SpectralAdvectionDiffusion/`. **gpu** is **False** by default.
 
 ## Simulation Setup and Execution
 
@@ -56,7 +56,7 @@ Simulation parameters are chosen in **main.py**. After choosing parameters, the 
 1. `uinf`: Background wind speed (as a [x,y,z] vector. z direction should be 0.).
 2. `rs_wind`: Radius of source points used in MFS calculation (for exterior solution).
 3. `rs_wind_int`: Radius of source points used in MFS calculation (for interior solution).
-5. `Nb_wind`: Number of boundary points to use in MFS calculation.
+5. `Nb_wind`: Number of boundary points to use in MFS calculation. It can only be the number of a tsphere file (found in `/data/points/`).
 
 ### Timestepping parameters
 #### Note: Currently only supports gamma=1, c=0.
@@ -78,7 +78,7 @@ Simulation parameters are chosen in **main.py**. After choosing parameters, the 
 1. `rs_conc`: Radius of source points to use in MFS calculation (for exterior solution).
 2. `cutoff`: When evaluating the modified bessel function of the second kind of order 0, values above `cutoff` will be set to 0.
 3. `rs_conc_int`: Radius of source points to use in MFS calculation (for interior solution).
-4. `Nb_conc`: Number of boundary points to use in MFS calculation.
+4. `Nb_conc`: Number of boundary points to use in MFS calculation. It can only be the number of a tsphere file (found in `/data/points/`).
 7. `sigma`: Variance parameter to be used in MFS calculation (for interior solution).
 
 ## Plotting and Visualization

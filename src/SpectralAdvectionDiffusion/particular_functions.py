@@ -251,17 +251,8 @@ def InvYukawa(rhs,lambda_k,SIMat_arr,Lz,Nz,Nx,Ny,Ainv,block_C,bigM1,y_ids,x_idxs
     # SIMat_arr = SIMat[0:Nz,:] (as np array)
     rhs_k = np.fft.fft2(rhs,axes=[2,0])
     bigfhat = ftransform3(rhs_k).transpose((0,2,1)).reshape((-1)) # transform and stack the columns of the matrix. Start with slice y=0, then y=1, ...
-    # c = ftransform3(rhs_k)
-    # c = btransform3(c)
-    # c = np.fft.ifft2(c)
-    # c = np.real(c).get()
-    # plt.pcolor(c[24,:,:])
-    # plt.show()
-    # sys.exit()
     H = Lz/2
-    # print('before ainv 1')
     big_M2_solve = Ainv.solve(bigfhat)
-    # print('after ainv 1')
 
     bigM2 = block_C @ big_M2_solve -  0 # np.repeat(np.array([0,0]),Nx) because we set 0 penetration on floor and ceiling
     bigy = solve_block_2s(bigM1,bigM2)
@@ -270,27 +261,15 @@ def InvYukawa(rhs,lambda_k,SIMat_arr,Lz,Nz,Nx,Ny,Ainv,block_C,bigM1,y_ids,x_idxs
     bigBy[y_ids] = bigy*(-np.repeat(lambda_k.transpose().reshape((-1)),2)*H**2)
 
     bigx_rhs_rhs = bigfhat - bigBy
-    # print('before ainv 2')
     bigx = Ainv.solve(bigx_rhs_rhs)
-    # print('after ainv 2')
     
     bigBVPSoln = np.zeros(Ny*Nx*(Nz+2), dtype=complex)
     bigBVPSoln[x_idxs] = bigx
     bigBVPSoln[y_idxs] = bigy
-    # print('should be the same:')
-    # print(bigBVPSoln[(Nz+2):(2*Nz+4)])
     bigBVPSoln = bigBVPSoln.reshape((Ny,Nx,Nz+2)).transpose((0,2,1))
-    # print(bigBVPSoln[0,:,1])
-    # sys.exit()
     
-    # print(f'bigBVP shape: {np.shape(bigBVPSoln)}')
-    # print(f'mat shape: {np.shape(H**2*SIMat_coo)}')
     secD = H**2*SIMat_arr @ bigBVPSoln
     Cnext = btransform3(secD)
         
     Cn = np.real(np.fft.ifft2(Cnext,axes=[2,0]))
-    # c = np.real(Cn).get()
-    # plt.pcolor(c[24,:,:])
-    # plt.show()
-    # sys.exit()
     return Cn

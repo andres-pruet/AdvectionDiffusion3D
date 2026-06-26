@@ -34,6 +34,7 @@ def get_circle_pts(n,r,dth):
     pts = pts*r
     return pts
 
+## old helix formula
 # def get_cylinder_pts(n,h,r):
 #     # a hollow cylinder, might not be stable at the caps
 #     # helix method
@@ -159,66 +160,6 @@ def get_G_int_mat(x, xj, sigma):
     Rsq = (diffs**2).sum(axis=2)
     Rsq[Rsq==0]=1
     return np.exp(-Rsq / (2*sigma**2))
-    
-# def get_wind_field(xx,yy,zz,grid_pts,interior_mask,uinf,rs_wind,rs_wind_int,Ns_wind,Nb_wind,shape_params):
-#     # by default grid_pts is 2-by-N
-#     Nx = len(xx)
-#     Ny = len(yy)
-#     Nz = len(zz)
-#     shape = shape_params[-1]
-#     if shape==0:
-#         x0 = np.array([shape_params[0], shape_params[1], shape_params[2]])
-#         source_points = get_tdesign_points(Ns_wind)*shape_params[3]*rs_wind + x0
-#         source_points_int = get_tdesign_points(Ns_wind)*shape_params[3]*rs_wind_int + x0
-#         surface_points = get_tdesign_points(Nb_wind)*shape_params[3] + x0
-#     elif shape==1:
-#         # silo
-#         x0 = np.array([shape_params[0],shape_params[1],shape_params[1]*0])
-#         h = shape_params[2]
-#         r = shape_params[3]
-#         surface_points = get_silo_pts(Nb_wind,Nb_wind,h,r,x0)
-#         source_points = get_silo_pts(Ns_wind,Ns_wind,h,rs_wind,x0)
-#         source_points_int = get_silo_pts(Ns_wind,Ns_wind,h,rs_wind_int,x0)
-
-#     dGdx_mat_surface, dGdy_mat_surface, dGdz_mat_surface = gradG_wind(surface_points, source_points)
-
-#     normal_arr = get_normal_arr(surface_points, shape_params)
-#     normal_arr_x = normal_arr[:,0]
-#     normal_arr_y = normal_arr[:,1]
-#     normal_arr_z = normal_arr[:,2]
-#     normal_mat_x = np.repeat(normal_arr_x,len(source_points)).reshape(np.shape(dGdx_mat_surface))
-#     normal_mat_y = np.repeat(normal_arr_y,len(source_points)).reshape(np.shape(dGdx_mat_surface))
-#     normal_mat_z = np.repeat(normal_arr_z,len(source_points)).reshape(np.shape(dGdx_mat_surface))
-#     M = dGdx_mat_surface * normal_mat_x + dGdy_mat_surface * normal_mat_y + dGdz_mat_surface * normal_mat_z
-
-#     y = -uinf[0] * normal_arr_x - uinf[1] * normal_arr_y # remember uinf[2] = 0
-#     alpha = solve_ols(M,y)
-
-#     M_int1,M_int2,M_int3 = gradG_wind(surface_points, source_points_int)
-
-#     y_int1 = dGdx_mat_surface @ alpha + uinf[0]
-#     y_int2 = dGdy_mat_surface @ alpha + uinf[1]
-#     y_int3 = dGdz_mat_surface @ alpha
-
-#     alpha_int_x = solve_ols(M_int1,y_int1)
-#     alpha_int_y = solve_ols(M_int2,y_int2)
-#     alpha_int_z = solve_ols(M_int3,y_int3)
-
-#     dGdx_mat,dGdy_mat,dGdz_mat = gradG_wind(grid_pts, source_points)
-#     Ux = np.reshape((dGdx_mat @ alpha + uinf[0])*(~interior_mask), (Ny,Nz,Nx))
-#     Uy = np.reshape((dGdy_mat @ alpha + uinf[1])*(~interior_mask), (Ny,Nz,Nx))
-#     Uz = np.reshape((dGdz_mat @ alpha)*(~interior_mask), (Ny,Nz,Nx))
-
-#     dGdx_mat_int, dGdy_mat_int, dGdz_mat_int = gradG_wind(grid_pts, source_points_int)
-
-#     Ux_int = np.reshape((dGdx_mat_int @ alpha_int_x)*(interior_mask), (Ny,Nz,Nx))
-#     Uy_int = np.reshape((dGdy_mat_int @ alpha_int_y)*(interior_mask), (Ny,Nz,Nx))
-#     Uz_int = np.reshape((dGdz_mat_int @ alpha_int_z)*(interior_mask), (Ny,Nz,Nx))
-
-#     Ux = Ux + Ux_int
-#     Uy = Uy + Uy_int
-#     Uz = Uz + Uz_int
-#     return Ux, Uy, Uz
 
 def get_wind_field(xx,yy,zz,grid_pts,interior_mask,uinf,shape_params,surface_points, source_points, source_points_int):
     # by default grid_pts is 2-by-N
@@ -391,5 +332,4 @@ def get_Ch(
         print(f'relative RMSE: {norm(leakages_new)/norm(leakages_Cp)}')
         return Ch, leakages_new, leakages_Cp
     else: 
-        # return alpha,alpha_int,Ch
         return alpha,alpha_int,Ch

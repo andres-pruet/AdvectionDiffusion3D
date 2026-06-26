@@ -144,18 +144,6 @@ class simulate:
                 print(f'total conc surface pts: {len(self.surface_points)}')
                 print(f'total conc source pts: {len(self.source_points)}')
                 print(f'total conc interior pts: {len(self.source_points_int)}')
-
-                # pts1 = self.surface_points.get()
-                # pts2 = self.source_points.get()
-                # fig = plt.figure()
-                # ax = fig.add_subplot(projection='3d')
-                # # ax.set_xlim([-1,1])
-                # # ax.set_ylim([-1,1])
-                # # ax.set_xlim([-2,2])
-                # # ax.set_ylim([-2,2])
-                # ax.scatter(pts1[:,0],pts1[:,1],pts1[:,2])
-                # ax.scatter(pts2[:,0],pts2[:,1],pts2[:,2])
-                # plt.show()
             # get wind surface/source points
             if shape==0:
                 # sphere
@@ -455,6 +443,8 @@ class simulate:
         print('end of sim')
         print(f'sim date: {self.sim_date}')
         if plotting:
+            if not os.path.isdir('./data/plots/'):
+                os.mkdir('./data/plots/')
             if self.gpu:
                 os.mkdir(f'./data/plots/{self.sim_date}/')
                 np.save(f'./data/plots/{self.sim_date}/C_plots',C_plots.get())
