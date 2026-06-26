@@ -1,0 +1,10 @@
+pyproject.toml
+readme.md
+src/SpectralAdvectionDiffusion/__init__.py
+src/SpectralAdvectionDiffusion/mfs_functions.py
+src/SpectralAdvectionDiffusion/particular_functions.py
+src/SpectralAdvectionDiffusion/simulate.py
+src/SpectralAdvectionDiffusion.egg-info/PKG-INFO
+src/SpectralAdvectionDiffusion.egg-info/SOURCES.txt
+src/SpectralAdvectionDiffusion.egg-info/dependency_links.txt
+src/SpectralAdvectionDiffusion.egg-info/top_level.txt

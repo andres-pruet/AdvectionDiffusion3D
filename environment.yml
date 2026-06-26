@@ -1,0 +1,12 @@
+# create the environment from this file with `conda env create -f environment.yml`
+name: sad
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - numba
+  - scipy
+  - matplotlib
+  - cupy
+  - pyvista
+  - imageio
